@@ -15,3 +15,23 @@ func TestQueue_Enqueue(t *testing.T) {
 	q.Enqueue(3)
 	assert.Equal(t, 3, q.Size())
 }
+
+func TestQueue_Dequeue(t *testing.T) {
+	q := queue.New[string](3)
+	q.Enqueue("a")
+	q.Enqueue("b")
+	q.Enqueue("c")
+
+	assert.Equal(t, 3, q.Size())
+	value := q.Dequeue()
+	assert.Equal(t, "a", value)
+	assert.Equal(t, 2, q.Size())
+
+	value = q.Dequeue()
+	assert.Equal(t, "b", value)
+	assert.Equal(t, 1, q.Size())
+
+	value = q.Dequeue()
+	assert.Equal(t, "c", value)
+	assert.Equal(t, 0, q.Size())
+}

@@ -24,8 +24,10 @@ func TestQueue_EnqueueOverCapacity(t *testing.T) {
 	q.Enqueue(2)
 	assert.Equal(t, 2, q.Size())
 
-	assert.Equal(t, 1, q.Dequeue())
-	assert.Equal(t, 2, q.Dequeue())
+	v, _ := q.Dequeue()
+	assert.Equal(t, 1, v)
+	v, _ = q.Dequeue()
+	assert.Equal(t, 2, v)
 }
 
 func TestQueue_Dequeue(t *testing.T) {
@@ -35,12 +37,18 @@ func TestQueue_Dequeue(t *testing.T) {
 	q.Enqueue("c")
 
 	assert.Equal(t, 3, q.Size())
-	value := q.Dequeue()
+	value, _ := q.Dequeue()
 	assert.Equal(t, "a", value)
 	assert.Equal(t, 2, q.Size())
 
-	value = q.Dequeue()
-	value = q.Dequeue()
+	value, _ = q.Dequeue()
+	value, _ = q.Dequeue()
 	assert.Equal(t, "c", value)
 	assert.Equal(t, 0, q.Size())
+}
+
+func TestQueue_DequeueEmptyQueue(t *testing.T) {
+	q := queue.New[int](1)
+	_, err := q.Dequeue()
+	assert.Error(t, err, "queue is empty")
 }

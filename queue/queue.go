@@ -14,6 +14,11 @@ func New[T any](capacity int) *Queue[T] {
 }
 
 func (q *Queue[T]) Enqueue(item T) {
+	if len(q.elements) == q.size {
+		grow := make([]T, q.size*2)
+		copy(grow, q.elements)
+		q.elements = grow
+	}
 	q.elements[q.tail] = item
 	q.size++
 	q.tail++
